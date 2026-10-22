@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="健伟短线研究工作台：A股看盘、可核验选股、自选观察和散户资金风险测算。">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>健伟 · 短线研究工作台</title><link rel="icon" href="./assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./assets/styles.css">
+</head><body>
+<svg class="sprite" xmlns="http://www.w3.org/2000/svg"><defs>
+<symbol id="icon-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="icon-scan" viewBox="0 0 24 24"><path d="M4 8V4h4m8 0h4v4M4 16v4h4m8 0h4v-4M3 12h18"/></symbol>
+<symbol id="icon-star" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9Z"/></symbol>
+<symbol id="icon-chart" viewBox="0 0 24 24"><path d="M4 3v17h17M7 14l4-5 4 3 5-7"/></symbol>
+<symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+<symbol id="icon-refresh" viewBox="0 0 24 24"><path d="M20 10a8 8 0 1 0-2 8M20 4v6h-6"/></symbol>
+<symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+<symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/></symbol>
+<symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+<symbol id="icon-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6Z"/><path d="m8 12 3 3 5-6"/></symbol>
+<symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-14-2 18"/></symbol>
+</defs></svg>
+<aside class="sidebar">
+ <a class="brand" href="./"><img src="./assets/favicon.svg" alt=""><span>健伟<span class="brand-sub">QUANT WORKBENCH</span></span></a>
+ <div class="workspace-label">我的研究空间 <span class="version">v1.0</span></div>
+ <nav aria-label="工作台导航">
+  <button class="nav active" data-view="scanner"><svg><use href="#icon-scan"/></svg>短线选股<span class="nav-dot"></span></button>
+  <button class="nav" data-view="market"><svg><use href="#icon-grid"/></svg>行情看板</button>
+  <button class="nav" data-view="watch"><svg><use href="#icon-star"/></svg>我的自选<span id="watch-count" class="nav-count">0</span></button>
+  <a class="nav" href="./quantlab/audit.html"><svg><use href="#icon-shield"/></svg>盈利证据审计</a>
+  <a class="nav" href="./quantlab/index.html"><svg><use href="#icon-chart"/></svg>原软件工作台<small>↗</small></a>
+ </nav>
+ <div class="sidebar-note"><span class="note-icon">◎</span><b>先核验，再决策</b><p>筛选的是研究候选。评分、形态和历史胜率都不等于未来收益。</p><a href="./reports/分析与优化报告.pdf" target="_blank" rel="noopener">阅读策略审计 <span>↗</span></a></div>
+ <a class="github" href="https://github.com/jianweixu055-ship-it/hhh" target="_blank" rel="noopener"><svg><use href="#icon-code"/></svg><span>GitHub 源码仓库<small>jianweixu055-ship-it / hhh</small></span>↗</a>
+</aside>
+<div class="workspace">
+ <header class="topbar"><div class="breadcrumb">研究工作台 <span>/</span> <b id="breadcrumb">短线选股</b></div>
+  <div class="header-tools"><span id="clock" class="clock"></span><button class="icon-button" id="theme" aria-label="切换明暗主题"><svg><use href="#icon-sun"/></svg></button><span class="avatar">健</span></div>
+ </header>
+ <main>
+  <div class="page-heading"><div><div class="eyebrow">A-SHARE RESEARCH TERMINAL</div><h1 id="page-title">发现机会，先看清风险<span class="heading-dot">.</span></h1><p id="page-subtitle">把选股条件、成交限制和资金风险，放在同一张工作台上。</p></div><div class="mode-switch" role="group" aria-label="数据模式"><button id="live-mode" class="active">实时行情</button><button id="demo-mode">演示体验</button></div></div>
+  <div class="data-banner" id="data-banner" role="status"><span class="status-dot"></span><span id="data-message">正在连接腾讯行情…</span><button id="refresh"><svg><use href="#icon-refresh"/></svg>刷新行情</button></div>
+  <section class="index-grid" id="index-grid" aria-label="主要指数"></section>
+  <section class="panel scanner-panel" id="scanner-panel">
+   <div class="panel-head"><div class="title-row"><span class="section-icon"><svg><use href="#icon-scan"/></svg></span><h2>散户短线筛选</h2><span class="tag blue">收盘强度复核</span></div><span class="muted small">保留原规则 · 不刷高胜率</span></div>
+   <div class="scanner-content"><div class="scan-description"><b>只研究条件完整的机会</b><p>涨幅 2–6% · 换手 3–10% · 量比 1.2–2.5 · 总市值 &lt;50 亿<br>20 日涨幅 &lt;30% · 收盘强度 ≥90% · 非 ST / 退市风险股</p></div>
+    <div class="scan-fields"><label>研究股票池<select id="scan-universe"><option value="watch">当前观察池</option><option value="historical">附件历史池（356只，非全市场）</option></select></label><label>市场范围<select id="scan-board"><option value="main">仅主板（00 / 60）</option><option value="all">含创业板 / 科创板</option></select></label><button class="primary" id="run-scan"><svg><use href="#icon-scan"/></svg>运行条件核验</button></div>
+   </div><div class="scan-footer"><span>◎ 盘中仅预筛；收盘数据完整后才确认。次日成交与 T+1 限制仍需核验。</span><span id="scan-status">尚未运行</span></div>
+   <div id="scan-output" hidden></div>
+  </section>
+  <div class="terminal-grid">
+   <div class="main-column">
+    <section class="panel chart-panel"><div class="panel-head chart-heading"><div><div class="stock-title"><h2 id="stock-name">贵州茅台</h2><span class="stock-code" id="stock-code">600519 · 沪市</span><button class="star-button" id="toggle-star" aria-label="收藏当前股票"><svg><use href="#icon-star"/></svg></button></div><div class="stock-price-line"><strong id="stock-price">—</strong><span id="stock-change">等待行情</span><span class="tag" id="quote-date">数据时间待确认</span></div></div><div class="search-wrap"><svg><use href="#icon-search"/></svg><input id="search" aria-label="搜索股票" placeholder="代码 / 名称，回车查询" autocomplete="off"><div id="search-results" class="search-results" hidden></div></div></div>
+     <div class="chart-toolbar"><div class="segmented" role="group" aria-label="图表周期"><button data-period="day" class="active">日 K</button><button data-period="week">周 K</button><button data-period="month">月 K</button></div><div class="chart-legend"><span class="ma5">MA5</span><span class="ma10">MA10</span><span class="ma20">MA20</span><span class="muted small">前复权</span></div></div>
+     <div class="chart-canvas" id="price-chart" role="img" aria-label="股票K线与成交量图"></div><div class="chart-note" id="chart-note">等待历史 K 线；不会以模拟数据替代实时结果。</div>
+    </section>
+    <section class="panel watch-panel"><div class="panel-head"><div class="title-row"><h2 id="table-title">精选观察池</h2><span class="tag" id="table-count">0 只</span></div><div class="table-tools"><button class="text-button" id="sort-change">涨跌幅排序 ↕</button><button class="text-button" id="export-watch"><svg><use href="#icon-download"/></svg>导出</button></div></div><div class="table-scroll"><table><thead><tr><th>股票 / 代码</th><th>最新价</th><th>涨跌幅</th><th>成交额</th><th>换手率</th><th>量比</th><th>自选</th></tr></thead><tbody id="watch-body"></tbody></table></div><div class="table-footer"><span>当前列表是观察池，不代表全市场。点击股票查看图表与风险测算。</span><span id="source-label">腾讯行情 · 待连接</span></div></section>
+   </div>
+   <aside class="detail-column">
+    <section class="panel"><div class="panel-head"><h2>行情快照</h2><span class="tag" id="snapshot-mode">待连接</span></div><div class="snapshot-grid" id="snapshot"></div><div class="order-tabs"><b>五档盘口</b><span>价格 / 手数</span></div><div id="orderbook" class="orderbook"></div></section>
+    <section class="panel risk-panel"><div class="panel-head"><div class="title-row"><svg class="inline-icon"><use href="#icon-shield"/></svg><h2>资金风险测算</h2></div><span class="tag">示例</span></div><div class="risk-form"><label>账户总资金（元）<input id="capital" type="number" min="100" step="1000" value="50000"></label><div class="two-fields"><label>单票上限 %<input id="weight" type="number" min="1" max="100" value="20"></label><label>单笔风险 %<input id="risk-pct" type="number" min="0.1" max="10" step="0.1" value="0.5"></label></div><label>测算止损距离 %<input id="stop-pct" type="number" min="0.5" max="30" step="0.5" value="4"></label><div id="risk-result" class="risk-result"></div><p class="risk-disclaimer">按 100 股整手、买入佣金万三且最低 5 元估算；普通主板/创业板为适用范围。科创板等特殊申报规则需另核验。止损金额不是最大亏损保证，T+1、跳空和跌停都可能放大损失。</p></div></section>
+    <section class="panel note-panel"><div class="panel-head"><h2>我的观察笔记</h2><span class="muted small">仅存本机</span></div><div class="note-body"><textarea id="stock-note" rows="3" placeholder="记录关注理由、失效条件和待核验信息…" aria-label="当前股票观察笔记"></textarea><div class="note-actions"><span id="note-status" class="muted small"></span><button id="save-note" class="secondary">保存笔记</button></div></div></section>
+   </aside>
+  </div>
+  <footer class="page-footer"><span>健伟短线研究工作台 <span class="footer-dot">·</span> 行情可能延迟，以交易所与券商终端为准</span><a href="./quantlab/audit.html">查看历史证据与限制 <svg><use href="#icon-arrow"/></svg></a></footer>
+ </main>
+</div><div id="toast" class="toast" role="status" hidden></div>
+<script src="./quantlab/echarts.min.js"></script><script type="module" src="./assets/app.mjs"></script>
+</body></html>
