@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QuantLab · 盈利证据审计</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--card:#141f30;--line:#2a3b53;--text:#e8edf6;--muted:#acb9ce;--blue:#81b1ff;--bad:#ff9c8f;--good:#8bd7c1}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.7 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1200px;margin:auto;padding:32px 22px}h1{font-size:30px;line-height:1.3;margin:10px 0}h2{font-size:19px;margin:0 0 12px}p{margin:10px 0}a{color:var(--blue)}.muted,small{color:var(--muted)}.eyebrow{color:var(--blue);font-size:12px;letter-spacing:2px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin:18px 0}.notice{border-left:4px solid var(--bad)}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.kpi{border:1px solid var(--line);border-radius:10px;padding:15px}.kpi strong{display:block;font-size:25px;line-height:1.5}.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}label{display:block;font-size:12px;color:var(--muted)}input,select,button{width:100%;border:1px solid #40526f;border-radius:7px;background:#0d1727;color:var(--text);padding:10px;font:inherit}button{cursor:pointer;background:#255ed0;border-color:#255ed0}button:disabled{opacity:.5}table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:13px}th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line)}th:first-child,td:first-child{text-align:left}th{color:var(--muted)}.scroll{overflow:auto}.bad{color:var(--bad)}.good{color:var(--good)}.pill{border:1px solid var(--line);border-radius:30px;padding:4px 12px;font-size:12px;color:var(--muted)}.flex{display:flex;align-items:center;gap:14px;flex-wrap:wrap}#chart{width:100%;height:220px}.status{white-space:pre-wrap;color:var(--muted)}.footer{font-size:12px;overflow-wrap:anywhere}@media(max-width:750px){.grid,.controls{grid-template-columns:repeat(2,1fr)}main{padding:20px 12px}h1{font-size:24px}.card{padding:16px}}
+</style></head><body><main>
+<div class="eyebrow">QUANTLAB / EVIDENCE AUDIT / 2026-10-22</div>
+<h1>历史胜率能复算，实盘盈利尚未证实</h1>
+<p class="muted">使用你上传的信号快照，重新检查成交时点、T+1、费用与统计不确定性。保留失败结果，不以调高胜率作为优化目标。</p>
+<div class="flex"><a href="index.html" target="_top">返回选股研究界面</a><a href="分析与优化报告.md">完整报告</a><span class="pill">无网络也可复算</span></div>
+<div class="card notice"><b>先区分两件事</b><p>下列胜率是“附件中历史模拟交易扣费后盈利的比例”。它不是未来胜率，也不是账户最终赚钱的概率。原标称 86.5% / 82.1% 的策略缺少逐笔数据；目前无法验证。</p><p class="muted">附件是前复权价格，缺少不复权原价、逐日日期、复权事件、退市样本、订单与成交记录。费用按名义金额估算，无法还原真实整手交易与排队成交；因此不输出组合年化、夏普或最大回撤。</p></div>
+<div class="card"><h2>重算条件</h2><div class="controls">
+<div><label for="dataset">策略数据集</label><select id="dataset"><option value="strength">收盘强度·小市值</option><option value="base">原尾盘战法</option></select></div>
+<div><label for="year">信号年份</label><select id="year"><option value="2026">2026（近期回看，非独立样本外）</option><option value="2025">2025</option><option value="2024">2024</option><option value="all">全部</option></select></div>
+<div><label for="scenario">固定规则对照</label><select id="scenario"><option value="corrected">修正执行：次日开盘→信号后第3日收盘</option><option value="guarded">风控试验：市场过滤 / 跳空 / 4%止损（未通过）</option></select></div>
+<div><label for="notional">每笔名义投入（元，非账户总额）</label><input id="notional" type="number" value="50000" min="100" step="1000"></div>
+<div><label for="commission">单边佣金（%）</label><input id="commission" type="number" value="0.03" min="0" step="0.005"></div>
+<div><label for="minimum">每边最低佣金（元）</label><input id="minimum" type="number" value="5" min="0" step="1"></div>
+<div><label for="slippage">每边滑点（%）</label><input id="slippage" type="number" value="0.1" min="0" max="10" step="0.05"></div>
+<div style="align-self:end"><button id="run">重新计算</button></div></div>
+<p class="muted">另计卖出印花税 0.05%、双边过户费各 0.001%（固定假设，实际按券商账单核对）。持有至信号后的第3日，买入当日不卖；一字日不假设成交。止损仅自买入后的交易日起执行。</p>
+<p class="muted">风控试验使用信号字段 i ≥ −3、次日高开不超过 3%、买入后可卖日起 4% 止损；没有搜索最优参数，2026 年未改善净收益，不能当作已验证策略。</p></div>
+<div class="card"><div class="flex"><h2>本次重算</h2><span id="dataRange" class="pill">加载中</span></div><div id="kpis" class="grid"></div><p id="status" class="status"></p><p id="confidence" class="muted"></p><p id="verdict"></p><button id="export" style="max-width:240px">导出本次逐笔结果 CSV</button></div>
+<div class="card"><h2>分月单笔净收益均值</h2><p class="muted">这是信号收益统计，不是账户净值曲线；没有信号的月份不画为盈利。</p><div id="chart"></div></div>
+<div class="card"><h2>优化前后 · 固定假设对照</h2><p class="muted">原版：信号日收盘买入、统一扣 0.15%。执行修正：次日开盘入场、双边各 0.1% 滑点与明细费用、每笔 5 万元。更换入场时点后，属于不同交易规则对照，不代表预测能力提高。</p><div class="scroll"><table><thead><tr><th>数据集 / 口径</th><th>年份</th><th>已平仓</th><th>胜率</th><th>平均净收益</th><th>平均赚/平均亏</th><th>盈利因子</th></tr></thead><tbody id="comparison"></tbody></table></div></div>
+<div class="card"><h2>能否用来实际盈利</h2><p>先修正执行错误，再保留一个冻结版本做未来纸面成交记录。必须同时记录“发出信号但买不到”和“亏损卖不出”的订单，才能评估真实成交的选择偏差。若接入真实交割单，再计算扣全部费用后的账户净值、最大回撤和基准超额收益。</p><p>2026 年已被原软件用来挑选策略，不能再冒充干净的样本外测试。按时间前推验证时，训练窗口只能使用当时已结束的交易，边界至少剔除跨期持仓；最终还需一段完全未参与调参的未来观察期。</p><p class="muted">胜率置信区间描述已有样本的不确定性。它无法覆盖数据造假、过拟合、市场变化或无法成交的系统性偏差；不转换成“实盘赚钱概率”。</p></div>
+<p id="fingerprint" class="footer muted"></p><p class="footer muted">运行：node server.js。重新生成完整结果：node research.js；python confidence.py（NumPy）。原始附件不改写，交付包不携带 ai_key.json 中的密钥。</p>
+</main><script src="eval-engine.js"></script><script src="audit.js"></script></body></html>

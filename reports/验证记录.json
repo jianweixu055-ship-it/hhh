@@ -1,0 +1,27 @@
+{
+  "node_regression": {
+    "passed": 14,
+    "failed": 0
+  },
+  "offline_browser_smoke": "passed",
+  "live_quote_requests": {
+    "qt.gtimg.cn": "proxy 403",
+    "quotes.sina.cn": "proxy 403"
+  },
+  "input_sha256": "32bb89225548ceffb1fceca94c6c0c1418e49d577e2fbcbe1b95b29daa9a8b01",
+  "original_input_unchanged": true,
+  "uploaded_credential_copied": false,
+  "live_profitability_established": false,
+  "assumptions": {
+    "notional_per_trade_cny": 50000,
+    "commission": 0.0003,
+    "minimum_commission": 5,
+    "slippage_per_side": 0.001
+  },
+  "limitations": [
+    "Uploaded qfq snapshots, no raw lot-level cash reconstruction",
+    "2026 data already used in source strategy selection",
+    "Windows launch script not executed on Windows",
+    "Unresolved exits not included in closed-trade win rate"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "quantlab-evidence-audit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "QuantLab historical signal audit; live profitability unproven",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "research": "node research.js"
+  }
+}

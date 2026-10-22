@@ -1,0 +1,7 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0a0f1c"/>
+  <rect x="64" y="64" width="384" height="384" rx="64" fill="#101827" stroke="#1c2940" stroke-width="4"/>
+  <text x="256" y="190" font-family="Arial" font-size="150" font-weight="bold" fill="#3d7eff" text-anchor="middle">Q</text>
+  <text x="256" y="320" font-family="Arial" font-size="90" font-weight="bold" fill="#e8eef7" text-anchor="middle">选股</text>
+  <path d="M128 420 L216 340 L288 380 L384 280" stroke="#ff4d5e" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
