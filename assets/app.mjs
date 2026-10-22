@@ -96,7 +96,7 @@ async function selectSymbol(symbol){
  state.symbol=symbol;$('search').value='';$('search-results').hidden=true;
  $('stock-note').value=notes[symbol]?.text||'';$('note-status').textContent=notes[symbol]?'已保存于本机':'';
  renderTable();renderDetails();loadChart();
- if(!state.quotes[symbol])await loadMarket();
+ if(!state.quotes[symbol]){while(state.refreshing)await new Promise(r=>setTimeout(r,100));if(state.symbol===symbol&&!state.quotes[symbol])await loadMarket();}
 }
 async function loadMarket(){
  if(state.refreshing)return;state.refreshing=true;$('refresh').disabled=true;const generation=state.generation;
@@ -193,7 +193,7 @@ $('search').oninput=()=>{
  $('search-results').innerHTML=matches.map(([s,n])=>`<button data-search="${s}"><span>${esc(n)}</span><span class="muted">${s.slice(2)}</span></button>`).join('');$('search-results').hidden=!matches.length;
  $('search-results').querySelectorAll('[data-search]').forEach(b=>b.onclick=()=>selectSymbol(b.dataset.search));
 };
-$('search').onkeydown=e=>{if(e.key==='Enter'){const query=$('search').value.trim(),match=[...known].find(([s,n])=>n===query||s===query||s.slice(2)===query);selectSymbol(match?.[0]||query);}else if(e.key==='Escape')$('search-results').hidden=true;};
+$('search').onkeydown=e=>{if(e.key==='Enter'){const query=$('search').value.trim(),match=[...known].find(([s,n])=>n===query||s===query);selectSymbol(match?.[0]||query);}else if(e.key==='Escape')$('search-results').hidden=true;};
 document.addEventListener('click',e=>{if(!e.target.closest('.search-wrap'))$('search-results').hidden=true;});
 new ResizeObserver(()=>chart.resize()).observe($('price-chart'));
 function clock(){$('clock').textContent=new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date())+' 北京时间';}
