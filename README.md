@@ -2,7 +2,7 @@
 
 在原软件基础上增加看盘、短线条件核验和小资金风险测算。所有源代码、测试和报告直接保存在本仓库。
 
-在线页面：<https://jianweixu055-ship-it.github.io/hhh/>，由 GitHub Pages 工作流发布。
+部署地址：<https://jianweixu055-ship-it.github.io/hhh/>（GitHub Pages 首次启用后生效）。当前源码已推送；仓库连接缺少创建 Pages 的权限，需要仓库管理员在 Settings → Pages 将 Source 设为 GitHub Actions。
 
 ## 功能与边界
 
@@ -49,6 +49,8 @@ QL_TEST_CHROMIUM=/usr/bin/chromium python tests/browser-smoke.py
 ## 发布与原软件
 
 `.github/workflows/pages.yml` 在推送 `main` 后自动测试、构建、部署。仓库 Pages 来源应为 **GitHub Actions**。测试失败不会发布。
+
+首次启用 Pages 后，可在仓库 Actions → Test and publish stock workbench → Run workflow 重新发布。构建和发布是独立任务，首次 Pages 配置未完成时仍可下载构建任务生成的静态站点产物。
 
 原软件保留在 `quantlab/`。静态站点可访问其审计页；原版 AI 和服务端代理需要本机运行 `quantlab/server.js`，GitHub Pages 不运行 Node 后端。上传的 AI 密钥未复制到仓库或发布产物。
 

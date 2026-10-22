@@ -22,7 +22,6 @@ jobs:
         run: npm test
       - name: Build public static site
         run: npm run build
-      - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
@@ -33,6 +32,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/configure-pages@v5
       - name: Publish
         id: deployment
         uses: actions/deploy-pages@v4
